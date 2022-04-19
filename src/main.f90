@@ -15,6 +15,11 @@ program Raytracer
     call vec3_print(v1)
     call vec3_print(v2)
     call vec3_print(v3)
+    print *, "V1 len = ", vec3_length(v1)
+    v2 = v2 * 2.0
+    v1 = v1 / 2.0
+    call vec3_print(v1)
+    call vec3_print(v2)
 
     ! variable definitions
     width = 400

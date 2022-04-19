@@ -1,7 +1,12 @@
+! TODO
+! normalize
+! dot product
+! cross product
+
 module class_vec3
     implicit none 
-    private :: vec3_add, vec3_sub 
-    public :: vec3, vec3_print, vec3_create
+    private :: vec3_add, vec3_sub, vec3_mult, vec3_div
+    public :: vec3, vec3_print, vec3_create, vec3_length
 
     type vec3
         real :: v(3)
@@ -13,6 +18,14 @@ module class_vec3
 
     interface operator(-)
         module procedure vec3_sub
+    end interface
+
+    interface operator(*)
+            module procedure vec3_mult
+    end interface
+
+    interface operator(/)
+            module procedure vec3_div
     end interface
 
 
@@ -50,4 +63,42 @@ contains
             added%v(i) = v1%v(i) - v2%v(i)
         end do
     end function vec3_sub
+
+    function vec3_length(this) result (len)
+        type(vec3), intent(in) :: this
+        real :: len
+        integer :: i
+
+        len = 0
+
+        do i = 1, 3
+            len = len + this%v(i)**2
+        end do
+        
+        len = sqrt(len)
+    end function vec3_length
+
+    function vec3_mult(this, t) result (vec)
+        type(vec3), intent(in) :: this 
+        real, intent(in) :: t
+        type(vec3) :: vec 
+
+        integer :: i
+
+        do i = 1, 3
+            vec%v(i) = this%v(i) * t
+        end do
+    end function vec3_mult
+
+    function vec3_div(this, t) result (vec)
+        type(vec3), intent(in) :: this 
+        real, intent(in) :: t
+        type(vec3) :: vec 
+
+        integer :: i
+
+        do i = 1, 3
+            vec%v(i) = this%v(i) / t
+        end do
+    end function vec3_div
 end module class_vec3
