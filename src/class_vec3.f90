@@ -1,12 +1,7 @@
-! TODO
-! normalize
-! dot product
-! cross product
-
 module class_vec3
     implicit none 
     private :: vec3_add, vec3_sub, vec3_mult, vec3_div
-    public :: vec3, vec3_print, vec3_create, vec3_length
+    public :: vec3, vec3_print, vec3_create, vec3_length, vec3_dot, vec3_cross, vec3_normalize
 
     type vec3
         real :: v(3)
@@ -101,4 +96,33 @@ contains
             vec%v(i) = this%v(i) / t
         end do
     end function vec3_div
+
+    function vec3_dot(v1, v2) result (dp)
+        type(vec3), intent(in) :: v1, v2
+        real :: dp
+        integer :: i
+
+        dp = 0
+        
+        do i = 1, 3
+            dp = dp + v1%v(i)*v2%v(i)
+        end do
+    end function vec3_dot
+
+    function vec3_cross(v1, v2) result (cp)
+        type(vec3), intent(in) :: v1, v2
+        type(vec3) :: cp
+
+        cp%v(1) = v1%v(2)*v2%v(3) - v1%v(3)*v2%v(2)
+        cp%v(2) = v1%v(3)*v2%v(1) - v1%v(1)*v2%v(3)
+        cp%v(3) = v1%v(1)*v2%v(2) - v1%v(2)*v2%v(1)
+    end function vec3_cross
+
+    function vec3_normalize(this) result (norm_vec)
+        type(vec3), intent(in) :: this
+        type(vec3) :: norm_vec
+
+        norm_vec = this / vec3_length(this)
+    end function vec3_normalize
+        
 end module class_vec3

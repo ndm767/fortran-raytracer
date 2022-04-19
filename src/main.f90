@@ -20,6 +20,7 @@ program Raytracer
     v1 = v1 / 2.0
     call vec3_print(v1)
     call vec3_print(v2)
+    call vec3_print(vec3_normalize(v2))
 
     ! variable definitions
     width = 400
