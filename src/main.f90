@@ -1,4 +1,6 @@
 program Raytracer
+    use :: class_vec3
+
     implicit none
 
     ! variable declarations
@@ -6,6 +8,13 @@ program Raytracer
     integer :: x, y ! loop variables
     real :: r, g, b ! color variables
     integer :: ir, ig, ib ! integer colors
+    type(vec3) :: v1, v2, v3
+    v1 = vec3_create(1.0, 2.0, 3.0)
+    v2 = vec3_create(3.0, 2.0, 1.0)
+    v3 = v2 - v1
+    call vec3_print(v1)
+    call vec3_print(v2)
+    call vec3_print(v3)
 
     ! variable definitions
     width = 400
