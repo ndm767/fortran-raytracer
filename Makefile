@@ -13,3 +13,4 @@ all:
 clean:
 	$(RM) image.ppm
 	$(RM) $(PNAME)
+	$(RM) *.mod
