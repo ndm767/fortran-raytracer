@@ -2,15 +2,13 @@ PNAME := raytracer
 
 PFORTRANSRC := $(wildcard src/*.f90)
 
-LDLIBS += -llapack -lblas
-
 CC := gfortran
 
 .PHONY: all clean
 
 all:
 	$(RM) image.ppm
-	$(CC) $(PFORTRANSRC) -o $(PNAME) $(LDLIBS)
+	$(CC) $(PFORTRANSRC) -o $(PNAME)
 
 clean:
 	$(RM) image.ppm
