@@ -21,11 +21,11 @@ module class_vec3
     end interface
 
     interface operator(*)
-            module procedure vec3_mult
+        module procedure vec3_mult
     end interface
 
     interface operator(/)
-            module procedure vec3_div
+        module procedure vec3_div
     end interface
 
 
