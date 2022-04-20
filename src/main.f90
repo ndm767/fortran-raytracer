@@ -14,14 +14,17 @@ program Raytracer
     integer :: ir, ig, ib ! integer colors
     type(ray) :: pixel_ray ! ray for camera
     type(vec3) :: ray_color ! ray output color
-    type(sphere) :: main_sphere
+    type(sphere), dimension(3) :: spheres
 
 
     ! variable definitions
     width = 400
     height = 400
 
-    main_sphere = sphere_create(vec3_create(0.0, 0.0, 2.0), 1.0)
+    spheres(1) = sphere_create(vec3_create(0.0, 0.0, 2.0), 0.5)
+    spheres(2) = sphere_create(vec3_create(1.0, 0.0, 3.0), 0.5)
+    spheres(3) = sphere_create(vec3_create(0.0, -1.0, 2.5), 0.5)
+
 
     call sdl_init(width, height)
 
@@ -32,7 +35,7 @@ program Raytracer
             loc_z = 0.0
 
             pixel_ray = ray_create(vec3_create(loc_x, loc_y, loc_z), vec3_create(0.0, 0.0, 1.0))
-            ray_color = get_ray_color(pixel_ray, main_sphere)
+            ray_color = get_ray_color(pixel_ray, spheres)
 
 
             ir = int(255.99 * ray_color%v(1))
@@ -59,10 +62,20 @@ contains
         implicit none
         
         type(ray), intent(in) :: r
-        type(sphere), intent(in) :: s
+        type(sphere), dimension(:), intent(in) :: s
         type(vec3) :: c
+        integer :: i 
+        logical :: s_found
 
-        if (sphere_hit(r, s) .eqv. .true.) then
+        s_found = .false.
+
+        do i = 1, size(s)
+            if (sphere_hit(r, s(i)) .eqv. .true.) then
+                s_found = .true.
+            end if
+        end do
+
+        if (s_found .eqv. .true.) then
             c = vec3_create(1.0, 0.0, 0.0)
         else
             c = vec3_create(0.0, 0.0, 0.0)
