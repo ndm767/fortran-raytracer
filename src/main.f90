@@ -8,7 +8,7 @@ program Raytracer
     ! variable declarations
     integer :: width, height
     integer :: x, y ! loop variables
-    real :: r, g, b ! color variables
+    real :: loc_x, loc_y, loc_z ! current pixel location
     integer :: ir, ig, ib ! integer colors
     type(ray) :: pixel_ray ! ray for camera
     type(vec3) :: ray_color ! ray output color
@@ -26,11 +26,11 @@ program Raytracer
 
     do x = 0, width-1
         do y = 0, height-1
-            r = real(x) / ((real(width) - 1.0)/2.0) - 1.0
-            g = real(y) / ((real(height) - 1.0)/2.0) - 1.0
-            b = 0.0
+            loc_x = real(x) / (real(width)/2.0) - 1.0
+            loc_y = real(y) / (real(height)/2.0) - 1.0
+            loc_z = 0.0
 
-            pixel_ray = ray_create(vec3_create(r, g, b), vec3_create(0.0, 0.0, 1.0))
+            pixel_ray = ray_create(vec3_create(loc_x, loc_y, loc_z), vec3_create(0.0, 0.0, 1.0))
             ray_color = get_ray_color(pixel_ray, main_sphere)
 
 
