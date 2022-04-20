@@ -72,7 +72,9 @@ contains
         ! initialize the camera position to a constant right now
         curr_pos = vec3_create(0.0, 0.0, 0.0)
 
+        ! go through all of the spheres
         do i = 1, size(s)
+            ! if one is hit, see if its the closest one thats been hit and if it is, assign the output color to it
             if (sphere_hit(r, s(i)) .eqv. .true.) then
                 s_found = .true.
                 sphere_dist = vec3_length(s(i)%c - curr_pos)
