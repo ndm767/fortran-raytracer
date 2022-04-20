@@ -2,6 +2,7 @@ program Raytracer
     use :: class_vec3
     use :: class_ray
     use :: class_sphere
+    use :: class_light
 
     use :: sdl_binding
 
@@ -14,6 +15,7 @@ program Raytracer
     type(ray) :: pixel_ray ! ray for camera
     type(vec3) :: ray_color ! ray output color
     type(sphere), dimension(3) :: spheres ! all the spheres in the scene
+    type(light), dimension(1) :: lights ! all the lights in the scene
 
 
     ! variable definitions
@@ -23,6 +25,8 @@ program Raytracer
     spheres(1) = sphere_create(vec3_create(0.0, 0.0, 2.0), 0.5, vec3_create(1.0, 0.0, 0.0))
     spheres(2) = sphere_create(vec3_create(1.0, 0.0, 3.0), 0.5, vec3_create(0.0, 1.0, 0.0))
     spheres(3) = sphere_create(vec3_create(0.0, -1.0, 2.5), 0.5, vec3_create(0.0, 0.0, 1.0))
+
+    lights(1) = light_create(vec3_create(1.0, 1.0, 1.0), 10.0)
 
 
     call sdl_init(width, height)
@@ -61,6 +65,7 @@ contains
         type(vec3) :: curr_pos
         real :: sphere_dist
         real :: closest_found
+        type(sphere) :: closest_sphere
         integer :: i 
         logical :: s_found
 
@@ -79,12 +84,14 @@ contains
                 s_found = .true.
                 sphere_dist = vec3_length(s(i)%c - curr_pos)
                 if(sphere_dist < closest_found) then
-                    c = s(i)%col
+                    closest_sphere = s(i)
                 end if 
             end if
         end do
 
-        if (s_found .eqv. .false.) then
+        if (s_found .eqv. .true.) then
+            c = closest_sphere%col
+        else
             c = vec3_create(0.0, 0.0, 0.0)
         end if
 
