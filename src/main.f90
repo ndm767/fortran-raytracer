@@ -11,7 +11,6 @@ program Raytracer
     integer :: width, height
     integer :: x, y ! loop variables
     real :: loc_x, loc_y, loc_z ! current pixel location
-    integer :: ir, ig, ib ! integer colors
     type(ray) :: pixel_ray ! ray for camera
     type(vec3) :: ray_color ! ray output color
     type(sphere), dimension(3) :: spheres
@@ -36,11 +35,6 @@ program Raytracer
 
             pixel_ray = ray_create(vec3_create(loc_x, loc_y, loc_z), vec3_create(0.0, 0.0, 1.0))
             ray_color = get_ray_color(pixel_ray, spheres)
-
-
-            ir = int(255.99 * ray_color%v(1))
-            ig = int(255.99 * ray_color%v(2))
-            ib = int(255.99 * ray_color%v(3))
 
             call sdl_draw_pixel(x, y, ray_color%v(1), ray_color%v(2), ray_color%v(3))
 
