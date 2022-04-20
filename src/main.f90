@@ -56,6 +56,7 @@ contains
         use :: class_ray
         use :: class_vec3
         use :: class_sphere
+        use :: class_hitdata
 
         implicit none
         
@@ -65,7 +66,9 @@ contains
         type(vec3) :: curr_pos
         real :: sphere_dist
         real :: closest_found
-        type(sphere) :: closest_sphere
+        type(hitdata) :: closest_hit
+        type(hitdata) :: curr_hit
+        logical :: did_hit
         integer :: i 
         logical :: s_found
 
@@ -80,17 +83,18 @@ contains
         ! go through all of the spheres
         do i = 1, size(s)
             ! if one is hit, see if its the closest one thats been hit and if it is, assign the output color to it
-            if (sphere_hit(r, s(i)) .eqv. .true.) then
+            call sphere_hit(r, s(i), did_hit, curr_hit)
+            if (did_hit .eqv. .true.) then
                 s_found = .true.
                 sphere_dist = vec3_length(s(i)%c - curr_pos)
                 if(sphere_dist < closest_found) then
-                    closest_sphere = s(i)
+                    closest_hit = curr_hit
                 end if 
             end if
         end do
 
         if (s_found .eqv. .true.) then
-            c = closest_sphere%col
+            c = closest_hit%hitcolor
         else
             c = vec3_create(0.0, 0.0, 0.0)
         end if
