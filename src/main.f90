@@ -8,12 +8,12 @@ program Raytracer
     implicit none
 
     ! variable declarations
-    integer :: width, height
+    integer :: width, height ! window width and height
     integer :: x, y ! loop variables
     real :: loc_x, loc_y, loc_z ! current pixel location
     type(ray) :: pixel_ray ! ray for camera
     type(vec3) :: ray_color ! ray output color
-    type(sphere), dimension(3) :: spheres
+    type(sphere), dimension(3) :: spheres ! all the spheres in the scene
 
 
     ! variable definitions
