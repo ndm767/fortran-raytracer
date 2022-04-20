@@ -3,6 +3,8 @@ program Raytracer
     use :: class_ray
     use :: class_sphere
 
+    use :: sdl_binding
+
     implicit none
 
     ! variable declarations
@@ -14,15 +16,14 @@ program Raytracer
     type(vec3) :: ray_color ! ray output color
     type(sphere) :: main_sphere
 
+
     ! variable definitions
     width = 400
     height = 400
 
     main_sphere = sphere_create(vec3_create(0.0, 0.0, 2.0), 1.0)
 
-    ! open the output file
-    open(1, file = "image.ppm", status = "new")
-    write (1, '(A,/,I3,A,I3,/,A,/)', advance='no') "P3", width, " ", height, "255"
+    call sdl_init(width, height)
 
     do x = 0, width-1
         do y = 0, height-1
@@ -38,10 +39,16 @@ program Raytracer
             ig = int(255.99 * ray_color%v(2))
             ib = int(255.99 * ray_color%v(3))
 
-            write(1, '(I3,A,I3,A,I3,/)', advance='no') ir, " ", ig, " ", ib
+            call sdl_draw_pixel(x, y, ray_color%v(1), ray_color%v(2), ray_color%v(3))
 
         end do 
     end do 
+
+    do while (sdl_is_running() == 1)
+        call sdl_render()
+    end do
+
+    call sdl_quit()
 
 contains
     function get_ray_color(r, s) result (c)
