@@ -9,17 +9,19 @@ module class_sphere
 
     type sphere
         type(vec3) :: c
+        type(vec3) :: col
         real :: r
     end type sphere
 
     contains
 
-    function sphere_create(center, radius) result (s)
-        type(vec3), intent(in) :: center
+    function sphere_create(center, radius, color) result (s)
+        type(vec3), intent(in) :: center, color
         real, intent(in) :: radius
         type(sphere) :: s
         s%c = center
         s%r = radius
+        s%col = color
     end function sphere_create
 
     function sphere_hit(curr_ray, curr_sphere) result (did_hit)

@@ -20,9 +20,9 @@ program Raytracer
     width = 400
     height = 400
 
-    spheres(1) = sphere_create(vec3_create(0.0, 0.0, 2.0), 0.5)
-    spheres(2) = sphere_create(vec3_create(1.0, 0.0, 3.0), 0.5)
-    spheres(3) = sphere_create(vec3_create(0.0, -1.0, 2.5), 0.5)
+    spheres(1) = sphere_create(vec3_create(0.0, 0.0, 2.0), 0.5, vec3_create(1.0, 0.0, 0.0))
+    spheres(2) = sphere_create(vec3_create(1.0, 0.0, 3.0), 0.5, vec3_create(0.0, 1.0, 0.0))
+    spheres(3) = sphere_create(vec3_create(0.0, -1.0, 2.5), 0.5, vec3_create(0.0, 0.0, 1.0))
 
 
     call sdl_init(width, height)
@@ -58,20 +58,31 @@ contains
         type(ray), intent(in) :: r
         type(sphere), dimension(:), intent(in) :: s
         type(vec3) :: c
+        type(vec3) :: curr_pos
+        real :: sphere_dist
+        real :: closest_found
         integer :: i 
         logical :: s_found
 
         s_found = .false.
 
+        ! initialize the closest found sphere to the farthest possible distance
+        closest_found = huge(1.0)
+
+        ! initialize the camera position to a constant right now
+        curr_pos = vec3_create(0.0, 0.0, 0.0)
+
         do i = 1, size(s)
             if (sphere_hit(r, s(i)) .eqv. .true.) then
                 s_found = .true.
+                sphere_dist = vec3_length(s(i)%c - curr_pos)
+                if(sphere_dist < closest_found) then
+                    c = s(i)%col
+                end if 
             end if
         end do
 
-        if (s_found .eqv. .true.) then
-            c = vec3_create(1.0, 0.0, 0.0)
-        else
+        if (s_found .eqv. .false.) then
             c = vec3_create(0.0, 0.0, 0.0)
         end if
 
